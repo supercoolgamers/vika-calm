@@ -76,7 +76,7 @@ create policy "feedback_v1_write" on feedback for all using (true) with check (t
 insert into child_profiles (id, name, age_years, notes, flags) values
   ('a1000000-0000-0000-0000-000000000001', 'Liam', 5, 'Recently diagnosed ADHD. Struggles with transitions.', array['adhd']),
   ('a1000000-0000-0000-0000-000000000002', 'Sofia', 8, 'Sensitive to sensory input, especially noise.', array['sensory']),
-  ('a1000000-0000-0000-0000-000000000003', 'Noah', 3, 'Frequent meltdowns around bedtime and food refusal.', array[]);
+  ('a1000000-0000-0000-0000-000000000003', 'Noah', 3, 'Frequent meltdowns around bedtime and food refusal.', array[]::text[]);
 
 insert into conversations (id, child_profile_id, title, title_source, title_confidence, title_review_status, behavior_tags, is_saved, message_count) values
   ('b2000000-0000-0000-0000-000000000001', 'a1000000-0000-0000-0000-000000000001', 'Morning routine meltdown', 'ai', 0.9, 'unreviewed', array['meltdown','transition'], true, 4),
