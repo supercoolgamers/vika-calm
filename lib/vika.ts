@@ -34,14 +34,21 @@ export function fallbackVikaResponse(input: string): VikaResponse {
 
 export function addSafetySignpost(response: VikaResponse): VikaResponse {
   const safetyTags = response.behavior_tags.map((tag) => tag.toLowerCase());
-  if (!safetyTags.includes("self-harm")) {
-    return response;
+  if (safetyTags.includes("self-harm")) {
+    return {
+      ...response,
+      validate: `If there is immediate danger, call local emergency services now. ${response.validate}`,
+    };
   }
 
-  return {
-    ...response,
-    validate: `If there is immediate danger, call local emergency services now. ${response.validate}`,
-  };
+  if (safetyTags.includes("aggression")) {
+    return {
+      ...response,
+      validate: `First make sure everyone has physical space and any hard objects are out of reach. ${response.validate}`,
+    };
+  }
+
+  return response;
 }
 
 export function parseVikaJson(raw: string, input: string): VikaResponse {

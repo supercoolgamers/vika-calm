@@ -113,7 +113,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const nextCount = (conversation.message_count || 0) + 2;
+  const { count } = await supabase
+    .from("messages")
+    .select("id", { count: "exact", head: true })
+    .eq("conversation_id", conversation.id);
+  const nextCount = count ?? (conversation.message_count || 0) + 2;
   const { data: updatedConversation } = await supabase
     .from("conversations")
     .update({
