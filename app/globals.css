@@ -68,6 +68,26 @@ button:disabled {
   margin: 0;
 }
 
+.form-message,
+.form-error {
+  border-radius: 8px;
+  line-height: 1.4;
+  margin: 0;
+  padding: 12px;
+}
+
+.form-message {
+  background: #eff5f2;
+  border: 1px solid #cfddd6;
+  color: var(--sage-dark);
+}
+
+.form-error {
+  background: #fff3f0;
+  border: 1px solid #efc5ba;
+  color: #7a2d20;
+}
+
 .topbar {
   align-items: end;
   display: flex;

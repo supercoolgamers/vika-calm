@@ -37,13 +37,17 @@ export async function signUp(formData: FormData) {
     redirect("/signup?error=1");
   }
 
-  await supabase.from("profiles").upsert({
-    id: data.user.id,
-    email,
-    subscription_status: "free",
-  });
+  if (data.session) {
+    await supabase.from("profiles").upsert({
+      id: data.user.id,
+      email,
+      subscription_status: "free",
+    });
 
-  redirect("/");
+    redirect("/");
+  }
+
+  redirect("/login?notice=check-email");
 }
 
 export async function signOut() {

@@ -1,12 +1,28 @@
 import Link from "next/link";
 import { signIn } from "@/app/auth/actions";
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string; notice?: string }>;
+}) {
+  const params = await searchParams;
+
   return (
     <main className="auth-frame">
       <form action={signIn} className="profile-form auth-card">
         <p className="eyebrow">Welcome back</p>
         <h1>Log in</h1>
+        {params.notice === "check-email" ? (
+          <p className="form-message">
+            Check your email and confirm your account, then come back here to log in.
+          </p>
+        ) : null}
+        {params.error ? (
+          <p className="form-error">
+            Login did not work. Confirm your email first, then try the same email and password again.
+          </p>
+        ) : null}
         <label className="field">
           <span>Email</span>
           <input name="email" type="email" required />
