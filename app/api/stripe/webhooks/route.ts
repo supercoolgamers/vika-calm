@@ -80,6 +80,15 @@ export async function POST(request: Request) {
           cancel_at_period_end: sub.cancel_at_period_end,
           updated_at: new Date().toISOString(),
         });
+
+        await supabase
+          .from("profiles")
+          .update({
+            stripe_customer_id: sub.customer as string,
+            subscription_status: ["active", "trialing"].includes(sub.status) ? "paid" : "free",
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", userId);
         break;
       }
 
@@ -90,6 +99,10 @@ export async function POST(request: Request) {
           .from("subscriptions")
           .update({ status: "canceled", updated_at: new Date().toISOString() })
           .eq("id", sub.id);
+        await supabase
+          .from("profiles")
+          .update({ subscription_status: "free", updated_at: new Date().toISOString() })
+          .eq("stripe_customer_id", sub.customer as string);
         break;
       }
 

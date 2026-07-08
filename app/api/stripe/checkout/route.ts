@@ -22,12 +22,14 @@ export async function POST(request: Request) {
 
     const body = await request.json();
     const { priceId, successUrl, cancelUrl } = body as {
-      priceId: string;
+      priceId?: string;
       successUrl?: string;
       cancelUrl?: string;
     };
 
-    if (!priceId) {
+    const checkoutPriceId = priceId || process.env.STRIPE_PRICE_ID;
+
+    if (!checkoutPriceId) {
       return NextResponse.json({ error: "priceId is required" }, { status: 400 });
     }
 
@@ -41,11 +43,11 @@ export async function POST(request: Request) {
       .single();
 
     const session = await createCheckoutSession({
-      priceId,
+      priceId: checkoutPriceId,
       customerId: profile?.stripe_customer_id ?? undefined,
       userId: user.id,
-      successUrl: successUrl ?? `${origin}/dashboard?checkout=success`,
-      cancelUrl: cancelUrl ?? `${origin}/dashboard?checkout=canceled`,
+      successUrl: successUrl ?? `${origin}/account?checkout=success`,
+      cancelUrl: cancelUrl ?? `${origin}/account?checkout=canceled`,
     });
 
     return NextResponse.json({ url: session.url });

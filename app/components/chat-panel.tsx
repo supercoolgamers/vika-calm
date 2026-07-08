@@ -19,6 +19,7 @@ export function ChatPanel({
   const [input, setInput] = useState("");
   const [childProfileId, setChildProfileId] = useState("");
   const [error, setError] = useState("");
+  const [upgradeRequired, setUpgradeRequired] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const canSubmit = input.trim().length > 0 && !isPending;
@@ -66,6 +67,12 @@ export function ChatPanel({
           router.push("/login");
           return;
         }
+        if (response.status === 402) {
+          setUpgradeRequired(true);
+          setMessages((current) => current.filter((message) => message.id !== optimistic.id));
+          setInput(content);
+          return;
+        }
         if (!response.ok) {
           throw new Error(payload.error || "Something went wrong");
         }
@@ -87,6 +94,20 @@ export function ChatPanel({
         setInput(content);
       }
     });
+  }
+
+  async function upgrade() {
+    const response = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    });
+    const payload = await response.json();
+    if (payload.url) {
+      window.location.href = payload.url;
+    } else {
+      setError("Upgrade is not configured yet");
+    }
   }
 
   return (
@@ -138,6 +159,16 @@ export function ChatPanel({
           <span>{error}</span>
           <button type="button" onClick={() => submit(input)}>
             Retry
+          </button>
+        </div>
+      ) : null}
+
+      {upgradeRequired ? (
+        <div className="paywall">
+          <h2>Free sessions used</h2>
+          <p>Upgrade to keep saving new coaching sessions and continue without the five-session limit.</p>
+          <button type="button" onClick={upgrade}>
+            Upgrade
           </button>
         </div>
       ) : null}

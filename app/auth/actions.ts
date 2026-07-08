@@ -13,6 +13,17 @@ export async function signIn(formData: FormData) {
     redirect("/login?error=1");
   }
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (user) {
+    await supabase.from("profiles").upsert({
+      id: user.id,
+      email: user.email,
+      subscription_status: "free",
+    });
+  }
+
   redirect("/");
 }
 
