@@ -5,13 +5,20 @@ import type { ChildProfile, Conversation } from "@/lib/types";
 
 export default async function Home() {
   const supabase = await createClient();
-  const [{ data: conversations }, { data: profiles }] = await Promise.all([
+  const [
+    { data: conversations },
+    { data: profiles },
+    {
+      data: { user },
+    },
+  ] = await Promise.all([
     supabase
       .from("conversations")
       .select("*, child_profiles(id, name, age_years)")
       .order("created_at", { ascending: false })
       .limit(6),
     supabase.from("child_profiles").select("*").order("created_at", { ascending: false }),
+    supabase.auth.getUser(),
   ]);
 
   return (
@@ -24,6 +31,7 @@ export default async function Home() {
         <nav>
           <Link href="/conversations">History</Link>
           <Link href="/profiles">Profiles</Link>
+          <Link href={user ? "/account" : "/login"}>{user ? "Account" : "Log in"}</Link>
         </nav>
       </section>
 

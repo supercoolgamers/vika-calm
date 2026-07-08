@@ -16,6 +16,17 @@ function childContext(profile: ChildProfile | null) {
 
 export async function POST(request: Request) {
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json(
+      { error: "Please log in to save a new coaching session" },
+      { status: 401 },
+    );
+  }
+
   const body = await request.json();
   const message = String(body.message || "").trim();
   const conversationId = body.conversationId ? String(body.conversationId) : "";
@@ -39,7 +50,11 @@ export async function POST(request: Request) {
   } else {
     const { data, error } = await supabase
       .from("conversations")
-      .insert({ child_profile_id: childProfileId, title: "New coaching session" })
+      .insert({
+        child_profile_id: childProfileId,
+        title: "New coaching session",
+        user_id: user.id,
+      })
       .select("*")
       .single();
     if (error) {
@@ -85,12 +100,14 @@ export async function POST(request: Request) {
     .insert([
       {
         conversation_id: conversation.id,
+        user_id: user.id,
         role: "parent",
         content: message,
         vika_source: null,
       },
       {
         conversation_id: conversation.id,
+        user_id: user.id,
         role: "coach",
         content: coachContent,
         vika_validate: vika.validate,
