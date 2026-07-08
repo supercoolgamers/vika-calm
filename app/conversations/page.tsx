@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { toggleSaved } from "@/app/conversations/actions";
 import { createClient } from "@/lib/supabase/server";
 import type { Conversation } from "@/lib/types";
 
@@ -25,9 +26,11 @@ export default async function ConversationsPage() {
       {conversations?.length ? (
         <section className="history-grid">
           {((conversations || []) as Conversation[]).map((conversation) => (
-            <Link href={`/chat/${conversation.id}`} key={conversation.id} className="history-card">
+            <article key={conversation.id} className="history-card">
               <div>
-                <h2>{conversation.title || "Untitled session"}</h2>
+                <Link href={`/chat/${conversation.id}`}>
+                  <h2>{conversation.title || "Untitled session"}</h2>
+                </Link>
                 <p>
                   {conversation.child_profiles?.name || "No child linked"} ·{" "}
                   {new Date(conversation.created_at).toLocaleDateString()}
@@ -38,8 +41,15 @@ export default async function ConversationsPage() {
                   <span key={tag}>{tag}</span>
                 ))}
               </div>
-              <small>{conversation.message_count} messages</small>
-            </Link>
+              <div className="card-footer">
+                <small>{conversation.message_count} messages</small>
+                <form action={toggleSaved}>
+                  <input type="hidden" name="id" value={conversation.id} />
+                  <input type="hidden" name="is_saved" value={String(conversation.is_saved)} />
+                  <button type="submit">{conversation.is_saved ? "Saved" : "Save"}</button>
+                </form>
+              </div>
+            </article>
           ))}
         </section>
       ) : (

@@ -376,6 +376,40 @@ button:disabled {
   padding: 18px;
 }
 
+.form-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.profile-edit-form {
+  display: grid;
+  gap: 12px;
+}
+
+.button-row,
+.card-footer {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.card-footer button,
+.danger-button {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--sage-dark);
+  min-height: 36px;
+  padding: 7px 10px;
+}
+
+.danger-button {
+  color: #8a2d20;
+  width: 100%;
+}
+
 @keyframes typing {
   0%,
   100% {
@@ -394,7 +428,8 @@ button:disabled {
   .topbar,
   .workspace,
   .composer,
-  .pane-heading {
+  .pane-heading,
+  .form-grid {
     display: grid;
     grid-template-columns: 1fr;
   }
