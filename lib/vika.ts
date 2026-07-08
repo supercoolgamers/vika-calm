@@ -6,27 +6,88 @@ const fallbackFollowups = [
   "Should there be a consequence after?",
 ];
 
-export function fallbackVikaResponse(input: string): VikaResponse {
-  const trimmed = input.trim();
-  const lower = trimmed.toLowerCase();
+function detectContext(input: string) {
+  const lower = input.toLowerCase();
+  const contexts = {
+    bedtime: lower.includes("bed") || lower.includes("sleep") || lower.includes("night"),
+    morning:
+      lower.includes("morning") ||
+      lower.includes("dress") ||
+      lower.includes("shoes") ||
+      lower.includes("school"),
+    aggression:
+      lower.includes("throw") ||
+      lower.includes("hit") ||
+      lower.includes("kick") ||
+      lower.includes("bite"),
+    refusal:
+      lower.includes("refuse") ||
+      lower.includes("won't") ||
+      lower.includes("wouldn't") ||
+      lower.includes("no "),
+    sensory:
+      lower.includes("loud") ||
+      lower.includes("noise") ||
+      lower.includes("scratchy") ||
+      lower.includes("clothes"),
+  };
+
   const tags = [
-    lower.includes("bed") ? "bedtime" : null,
-    lower.includes("school") || lower.includes("dress") ? "transition" : null,
-    lower.includes("throw") || lower.includes("hit") ? "aggression" : null,
+    contexts.bedtime ? "bedtime" : null,
+    contexts.morning ? "transition" : null,
+    contexts.aggression ? "aggression" : null,
+    contexts.refusal ? "refusal" : null,
+    contexts.sensory ? "sensory" : null,
     lower.includes("scream") || lower.includes("meltdown") ? "meltdown" : null,
   ].filter(Boolean) as string[];
 
+  return { contexts, tags: tags.length ? tags : ["stress", "coaching"] };
+}
+
+export function fallbackVikaResponse(input: string): VikaResponse {
+  const trimmed = input.trim();
+  const { contexts, tags } = detectContext(trimmed);
+  const setting = contexts.bedtime
+    ? "bedtime"
+    : contexts.morning
+      ? "the morning transition"
+      : contexts.refusal
+        ? "the refusal"
+        : "this moment";
+
+  const prevention = contexts.bedtime
+    ? "Tonight, make the next step tiny: bathroom, one book, lights. Use the same calm phrase each time and avoid renegotiating the whole routine."
+    : contexts.morning
+      ? "Tomorrow, set clothes and shoes out first, give a 5-minute warning, then offer one small choice: shirt first or shoes first."
+      : "For the next repeat, lower the demand, offer one clear choice, and wait for the first small sign of cooperation before adding more words.";
+
+  const safety = contexts.aggression
+    ? "Move breakable or hard objects away first and give a little space while staying nearby."
+    : "Stay close enough to feel available, but do not crowd them.";
+
   return {
     validate:
-      "This sounds like a very hard moment for both of you. Your child is showing stress with the tools they have available right now, and your calm presence can help their nervous system settle.",
+      `That sounds exhausting and stressful. In ${setting}, your child is probably already past the point where more explaining will help, and you are not failing because they escalated.`,
     investigate:
-      "Look at what happened just before the escalation: hunger, tiredness, a sudden transition, sensory overload, or a demand that felt too big. One small clue usually points to the best first support.",
+      "Look at the 10 minutes before it blew up: Were they hungry, tired, rushed, interrupted, surprised by a transition, or bothered by a sensory detail? Pick one likely trigger instead of trying to solve everything at once.",
     know:
-      "When children are flooded, reasoning and lectures usually land too late. Regulation comes first, then repair and teaching once their body is calmer.",
+      "When a child is flooded, the thinking part of the brain is not running the show. Short phrases, fewer choices, and physical calm work better than questions, lectures, or consequences in the middle of it.",
     act:
-      "Lower your voice, reduce the number of words, move close but give space, and offer one concrete next step. After calm returns, name what happened and practice the replacement behavior once.",
-    suggested_followups: fallbackFollowups,
-    behavior_tags: tags.length ? tags : ["stress", "coaching"],
+      `${safety} Say one sentence: "I will help you get through this." Then give one doable next step. ${prevention} After they are calm, do a brief repair: name what happened, name the limit, and practice the next step once.`,
+    suggested_followups: contexts.morning
+      ? [
+          "What can I do tomorrow morning to prevent this?",
+          "What should I say when they refuse?",
+          "Should I give a consequence later?",
+        ]
+      : contexts.bedtime
+        ? [
+            "How do I stop bedtime from becoming a battle?",
+            "What if they keep getting out of bed?",
+            "How do I stay calm when I am exhausted?",
+          ]
+        : fallbackFollowups,
+    behavior_tags: tags,
     title: trimmed.length > 52 ? `${trimmed.slice(0, 49)}...` : trimmed || "New coaching session",
     confidence: 0.72,
   };
