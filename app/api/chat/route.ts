@@ -103,8 +103,12 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("[api/chat]", error);
+    const message =
+      error instanceof Error && error.message.includes("insufficient_quota")
+        ? "OpenAI billing is not active for this API key yet."
+        : "Something went wrong - please try again";
     return NextResponse.json(
-      { error: "Something went wrong - please try again" },
+      { error: message },
       { status: 502 },
     );
   }

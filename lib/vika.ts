@@ -184,7 +184,9 @@ export async function generateVikaResponse({
   });
 
   if (!result.ok) {
-    throw new Error(`OpenAI request failed with ${result.status}`);
+    const payload = await result.json().catch(() => null);
+    const code = payload?.error?.code || payload?.error?.type || result.status;
+    throw new Error(`OpenAI request failed: ${code}`);
   }
 
   const payload = await result.json();

@@ -88,9 +88,9 @@ export function ChatPanel({
           payload.coachMessage,
         ]);
         router.refresh();
-      } catch {
+      } catch (error) {
         setMessages((current) => current.filter((message) => message.id !== optimistic.id));
-        setError("Something went wrong - please try again");
+        setError(error instanceof Error ? error.message : "Something went wrong - please try again");
         setInput(content);
       }
     });
