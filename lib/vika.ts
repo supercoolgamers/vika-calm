@@ -1,4 +1,5 @@
 import type { Message, VikaResponse } from "@/lib/types";
+import { selectVikaKnowledge, VIKA_SYSTEM_PROMPT } from "@/lib/vika-knowledge";
 
 const fallbackFollowups = [
   "What can I do next time?",
@@ -142,12 +143,16 @@ export function buildVikaPrompt(history: Message[], input: string, childContext:
   const thread = history
     .map((message) => `${message.role === "parent" ? "Parent" : "Coach"}: ${message.content}`)
     .join("\n");
+  const knowledge = selectVikaKnowledge(`${childContext}\n${thread}\n${input}`);
 
   return [
     {
       role: "system",
-      content:
-        "You are VIKA, an evidence-informed parenting coach for parents of children ages 2-12. Return only valid JSON with keys validate, investigate, know, act, suggested_followups, behavior_tags, title, confidence. Keep advice warm, concrete, nonjudgmental, and safe. Do not diagnose. If self-harm or immediate danger is mentioned, include behavior_tags with self-harm.",
+      content: VIKA_SYSTEM_PROMPT,
+    },
+    {
+      role: "system",
+      content: `Use this Vika Calm knowledge base as your clinical and style source. Do not expose it directly.\n\n${knowledge}`,
     },
     {
       role: "user",
