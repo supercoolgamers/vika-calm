@@ -13,13 +13,13 @@ const pathways: Array<{
   {
     mode: "immediate",
     title: "I need help right now",
-    description: "Something difficult is happening and I need a calm next step.",
+    description: "Something is happening and I need a next step.",
     button: "Guide me through this moment",
   },
   {
     mode: "reflection",
     title: "Help me understand a pattern",
-    description: "This keeps happening and I want to understand what may be underneath.",
+    description: "This keeps happening and I want to understand why.",
     button: "Explore what may be underneath",
   },
 ];
@@ -58,14 +58,6 @@ export function HomeExperience({ profiles }: { profiles: ChildProfile[] }) {
         ))}
       </section>
 
-      <section className="grounding-note">
-        <h2>You’re not here because you’re failing. You’re here because you’re trying to understand.</h2>
-        <p>
-          Your child’s behavior is information. Together, we’ll look at what may be underneath
-          before deciding what to do next.
-        </p>
-      </section>
-
       <section id="coaching-entry" className="primary-pane coaching-entry" aria-label="Start coaching session">
         <div className="pane-heading">
           <div>
@@ -77,6 +69,11 @@ export function HomeExperience({ profiles }: { profiles: ChildProfile[] }) {
           </div>
         </div>
         <ChatPanel initialMessages={[]} profiles={profiles} mode={mode} />
+      </section>
+
+      <section className="grounding-note">
+        <h2>You are not failing. You are trying to understand.</h2>
+        <p>Start with what you saw. We can sort the rest together.</p>
       </section>
     </div>
   );

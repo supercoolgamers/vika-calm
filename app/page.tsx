@@ -25,11 +25,11 @@ export default async function Home() {
     <main className="app-frame">
       <section className="topbar">
         <div>
-          <p className="eyebrow">VIKA Calm</p>
-          <h1>Before you react, let’s understand what’s happening.</h1>
+          <p className="wordmark">Vika Calm</p>
+          <h1>When things feel hard, start with one calm step.</h1>
           <p className="hero-copy">
-            Vika helps you look beneath the behavior, understand what your child may be
-            communicating, and decide what to do next.
+            Tell Vika what happened. We’ll help you steady the moment, look for the why,
+            and choose what to try next.
           </p>
         </div>
         <nav>
@@ -46,7 +46,7 @@ export default async function Home() {
           <div className="pane-heading">
             <div>
               <p className="eyebrow">Past sessions</p>
-              <h2>Recent coaching</h2>
+              <h2>Recent conversations</h2>
             </div>
             <Link className="secondary-link" href="/conversations">
               View all
@@ -67,7 +67,7 @@ export default async function Home() {
             </div>
           ) : (
             <div className="empty-panel">
-              <h2>Your past conversations will appear here.</h2>
+              <h2>Nothing saved yet.</h2>
             </div>
           )}
         </aside>
@@ -75,8 +75,8 @@ export default async function Home() {
 
       <section className="framework-section" aria-labelledby="framework-heading">
         <div>
-          <p className="eyebrow">VIKA framework</p>
-          <h2 id="framework-heading">How Vika helps you think</h2>
+          <p className="eyebrow">Vika framework</p>
+          <h2 id="framework-heading">A simple way through the moment</h2>
         </div>
         <div className="framework-grid">
           <article>
