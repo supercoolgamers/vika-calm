@@ -31,6 +31,20 @@ export function ChatPanel({
     () => [...messages].reverse().find((message) => message.role === "coach"),
     [messages],
   );
+  const promptHints =
+    mode === "immediate"
+      ? [
+          "What is your child doing right now?",
+          "What happened just before?",
+          "Is anyone unsafe?",
+          "What have you already tried?",
+        ]
+      : [
+          "When does this usually happen?",
+          "What tends to happen just before?",
+          "What does your child appear to gain, avoid, communicate, or regulate?",
+          "What usually happens afterward?",
+        ];
 
   async function submit(text = input, options?: { followupIntent?: boolean }) {
     const content = text.trim();
@@ -130,7 +144,7 @@ export function ChatPanel({
           <label className="field compact">
             <span>Child profile</span>
             <select value={childProfileId} onChange={(event) => setChildProfileId(event.target.value)}>
-              <option value="">Add a child profile for more personalised guidance.</option>
+              <option value="">No profile selected</option>
               {profiles.map((profile) => (
                 <option key={profile.id} value={profile.id}>
                   {profile.name}
@@ -138,6 +152,9 @@ export function ChatPanel({
                 </option>
               ))}
             </select>
+            {profiles.length === 0 ? (
+              <small>Add a child profile for more personalised guidance.</small>
+            ) : null}
           </label>
           {profiles.length === 0 ? (
             <a className="quiet-link" href="/profiles">
@@ -149,26 +166,13 @@ export function ChatPanel({
 
       <div className="message-list" aria-live="polite">
         {messages.length === 0 ? (
-          <div className="empty-panel">
-            <h2>{mode === "immediate" ? "Start with the moment in front of you." : "Start with the pattern you’re noticing."}</h2>
-            <ul className="prompt-list">
-              {(mode === "immediate"
-                ? [
-                    "What is your child doing right now?",
-                    "What happened just before?",
-                    "Is anyone unsafe?",
-                    "What have you already tried?",
-                  ]
-                : [
-                    "When does this usually happen?",
-                    "What tends to happen just before?",
-                    "What does your child appear to gain, avoid, communicate, or regulate?",
-                    "What usually happens afterward?",
-                  ]
-              ).map((prompt) => (
-                <li key={prompt}>{prompt}</li>
+          <div className="prompt-panel">
+            <p>{mode === "immediate" ? "You can include:" : "Helpful details:"}</p>
+            <div className="prompt-chips">
+              {promptHints.map((prompt) => (
+                <span key={prompt}>{prompt}</span>
               ))}
-            </ul>
+            </div>
           </div>
         ) : null}
 

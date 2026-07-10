@@ -13,21 +13,27 @@ const pathways: Array<{
   {
     mode: "immediate",
     title: "I need help right now",
-    description:
-      "My child is upset, refusing, hitting, shutting down, or something difficult is happening.",
+    description: "Something difficult is happening and I need a calm next step.",
     button: "Guide me through this moment",
   },
   {
     mode: "reflection",
     title: "Help me understand a pattern",
-    description:
-      "This keeps happening and I want to understand the triggers, needs, and skills involved.",
+    description: "This keeps happening and I want to understand what may be underneath.",
     button: "Explore what may be underneath",
   },
 ];
 
 export function HomeExperience({ profiles }: { profiles: ChildProfile[] }) {
   const [mode, setMode] = useState<CoachingMode>("immediate");
+
+  function chooseMode(nextMode: CoachingMode) {
+    setMode(nextMode);
+    document.getElementById("coaching-entry")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
 
   return (
     <div className="home-experience">
@@ -41,7 +47,11 @@ export function HomeExperience({ profiles }: { profiles: ChildProfile[] }) {
               <h2>{pathway.title}</h2>
               <p>{pathway.description}</p>
             </div>
-            <button type="button" onClick={() => setMode(pathway.mode)}>
+            <button
+              type="button"
+              aria-pressed={mode === pathway.mode}
+              onClick={() => chooseMode(pathway.mode)}
+            >
               {pathway.button}
             </button>
           </article>
@@ -56,7 +66,7 @@ export function HomeExperience({ profiles }: { profiles: ChildProfile[] }) {
         </p>
       </section>
 
-      <section className="primary-pane coaching-entry" aria-label="Start coaching session">
+      <section id="coaching-entry" className="primary-pane coaching-entry" aria-label="Start coaching session">
         <div className="pane-heading">
           <div>
             <p className="eyebrow">{mode === "immediate" ? "Immediate support" : "Pattern reflection"}</p>

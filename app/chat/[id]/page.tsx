@@ -41,8 +41,8 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
         </div>
         <nav>
           <Link href="/">New</Link>
-          <Link href="/conversations">History</Link>
-          <Link href="/profiles">Profiles</Link>
+          <Link href="/conversations">Past sessions</Link>
+          <Link href="/profiles">Children</Link>
         </nav>
       </section>
       <ChatPanel

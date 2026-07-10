@@ -19,7 +19,7 @@ export default async function ProfilesPage() {
         </div>
         <nav>
           <Link href="/">New session</Link>
-          <Link href="/conversations">History</Link>
+          <Link href="/conversations">Past sessions</Link>
         </nav>
       </section>
 

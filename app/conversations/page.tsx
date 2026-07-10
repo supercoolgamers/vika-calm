@@ -19,7 +19,7 @@ export default async function ConversationsPage() {
         </div>
         <nav>
           <Link href="/">New session</Link>
-          <Link href="/profiles">Profiles</Link>
+          <Link href="/profiles">Children</Link>
         </nav>
       </section>
 
