@@ -34,15 +34,15 @@ export function ChatPanel({
   const promptHints =
     mode === "immediate"
       ? [
-          "What is your child doing right now?",
+          "What did you see?",
           "What happened just before?",
           "Is anyone unsafe?",
-          "What have you already tried?",
+          "What changed after you responded?",
         ]
       : [
           "When does this usually happen?",
-          "What tends to happen just before?",
-          "What does your child appear to gain, avoid, communicate, or regulate?",
+          "What do you notice just before?",
+          "What does your child seem to be showing you?",
           "What usually happens afterward?",
         ];
 
@@ -167,7 +167,7 @@ export function ChatPanel({
       <div className="message-list" aria-live="polite">
         {messages.length === 0 ? (
           <div className="prompt-panel">
-            <p>{mode === "immediate" ? "You can include:" : "Helpful details:"}</p>
+            <p>{mode === "immediate" ? "Start with what you noticed:" : "What to observe:"}</p>
             <div className="prompt-chips">
               {promptHints.map((prompt) => (
                 <span key={prompt}>{prompt}</span>
@@ -224,8 +224,8 @@ export function ChatPanel({
         <textarea
           value={input}
           onChange={(event) => setInput(event.target.value)}
-          aria-label="Tell me what just happened"
-          placeholder="Tell me what just happened..."
+          aria-label="Describe what you saw"
+          placeholder="Describe what you saw..."
           rows={3}
         />
         <button type="submit" disabled={!canSubmit}>

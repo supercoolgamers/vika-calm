@@ -26,10 +26,11 @@ export default async function Home() {
       <section className="topbar">
         <div>
           <p className="wordmark">Vika Calm</p>
-          <h1>When things feel hard, start with one calm step.</h1>
+          <h1>Small moments of understanding create lasting change.</h1>
           <p className="hero-copy">
-            Tell Vika what happened. We’ll help you steady the moment, look for the why,
-            and choose what to try next.
+            Describe what you saw.
+            <br />
+            Together, we&apos;ll explore what happened before deciding how to respond.
           </p>
         </div>
         <nav>
@@ -81,15 +82,15 @@ export default async function Home() {
         <div className="framework-grid">
           <article>
             <h3>Validate</h3>
-            <p>Help the child feel safer and more understood.</p>
+            <p>Help your child feel safe and understood.</p>
           </article>
           <article>
             <h3>Investigate</h3>
-            <p>Look at what happened before, during, and after.</p>
+            <p>Look at what happened before, during and after.</p>
           </article>
           <article>
             <h3>Know</h3>
-            <p>Consider the need, missing skill, or communication beneath the behavior.</p>
+            <p>Consider the need, communication or missing skill beneath what happened.</p>
           </article>
           <article>
             <h3>Act</h3>

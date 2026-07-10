@@ -12,15 +12,15 @@ const pathways: Array<{
 }> = [
   {
     mode: "immediate",
-    title: "I need help right now",
-    description: "Something is happening and I need a next step.",
-    button: "Guide me through this moment",
+    title: "Guide me",
+    description: "Something difficult is happening right now.",
+    button: "Guide me",
   },
   {
     mode: "reflection",
-    title: "Help me understand a pattern",
-    description: "This keeps happening and I want to understand why.",
-    button: "Explore what may be underneath",
+    title: "Help me understand",
+    description: "This keeps happening and I’d like to understand it.",
+    button: "Help me understand",
   },
 ];
 
@@ -61,10 +61,10 @@ export function HomeExperience({ profiles }: { profiles: ChildProfile[] }) {
       <section id="coaching-entry" className="primary-pane coaching-entry" aria-label="Start coaching session">
         <div className="pane-heading">
           <div>
-            <p className="eyebrow">{mode === "immediate" ? "Immediate support" : "Pattern reflection"}</p>
-            <h2>Tell me what just happened.</h2>
+            <p className="eyebrow">{mode === "immediate" ? "Right now" : "Ongoing pattern"}</p>
+            <h2>Describe what you saw.</h2>
             <p className="pane-copy">
-              Don’t worry about using the right words. Just describe what you noticed.
+              Start with what you noticed. We&apos;ll explore what happened before choosing a response.
             </p>
           </div>
         </div>
@@ -72,8 +72,7 @@ export function HomeExperience({ profiles }: { profiles: ChildProfile[] }) {
       </section>
 
       <section className="grounding-note">
-        <h2>You are not failing. You are trying to understand.</h2>
-        <p>Start with what you saw. We can sort the rest together.</p>
+        <h2>Understanding comes before responding.</h2>
       </section>
     </div>
   );
