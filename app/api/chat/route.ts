@@ -49,23 +49,6 @@ export async function POST(request: Request) {
     }
     conversation = data;
   } else {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_status")
-      .eq("id", user.id)
-      .maybeSingle();
-    const { count: conversationCount } = await supabase
-      .from("conversations")
-      .select("id", { count: "exact", head: true })
-      .eq("user_id", user.id);
-
-    if ((profile?.subscription_status || "free") !== "paid" && (conversationCount || 0) >= 5) {
-      return NextResponse.json(
-        { error: "Free plan limit reached", upgradeRequired: true },
-        { status: 402 },
-      );
-    }
-
     const { data, error } = await supabase
       .from("conversations")
       .insert({
