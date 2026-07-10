@@ -28,9 +28,12 @@ export function ChatPanel({
     [messages],
   );
 
-  async function submit(text = input) {
+  async function submit(text = input, options?: { followupIntent?: boolean }) {
     const content = text.trim();
     if (!content) return;
+    const coachInstruction = options?.followupIntent
+      ? `I picked this follow-up: "${content}". Please do not repeat the first response. Help me implement it in the future with a practical plan, exact scripts, setup/prevention steps, what to practice when calm, and what to watch for next time.`
+      : "";
 
     setError("");
     setInput("");
@@ -59,6 +62,7 @@ export function ChatPanel({
             conversationId,
             childProfileId: childProfileId || undefined,
             message: content,
+            coachInstruction: coachInstruction || undefined,
           }),
         });
 
@@ -94,6 +98,10 @@ export function ChatPanel({
         setInput(content);
       }
     });
+  }
+
+  function submitFollowup(text: string) {
+    submit(text, { followupIntent: true });
   }
 
   async function upgrade() {
@@ -141,7 +149,7 @@ export function ChatPanel({
               {message.content}
             </div>
           ) : (
-            <VikaCard key={message.id} message={message} onFollowup={submit} />
+            <VikaCard key={message.id} message={message} onFollowup={submitFollowup} />
           ),
         )}
 

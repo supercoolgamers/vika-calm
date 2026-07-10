@@ -25,17 +25,20 @@ export function VikaCard({
         ))}
       </div>
       {message.suggested_followups?.length ? (
-        <div className="followups">
-          {message.suggested_followups.map((followup) => (
-            <button
-              key={followup}
-              type="button"
-              onClick={() => onFollowup?.(followup)}
-              disabled={!onFollowup}
-            >
-              {followup}
-            </button>
-          ))}
+        <div className="followup-panel">
+          <p>Next steps</p>
+          <div className="followups">
+            {message.suggested_followups.map((followup) => (
+              <button
+                key={followup}
+                type="button"
+                onClick={() => onFollowup?.(followup)}
+                disabled={!onFollowup}
+              >
+                {followup}
+              </button>
+            ))}
+          </div>
         </div>
       ) : null}
     </article>

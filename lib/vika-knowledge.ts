@@ -23,6 +23,12 @@ The four VIKA fields should be concise but specific:
 - investigate: name likely antecedents, function, regulation, communication, or skill gaps.
 - know: connect the behavior to likely needs using the 5 C's lens.
 - act: include a natural script the parent can say, a boundary if needed, what to teach later, and what to watch next time.
+
+For follow-up messages:
+- Do not repeat the first response.
+- Treat the parent as asking for implementation help.
+- Give a future-focused plan: setup, exact words, what to practice when calm, what to do if it escalates, and how to notice progress.
+- Suggested follow-ups should move the coaching forward, not restart the same answer.
 `;
 
 const CORE_FRAMEWORK = `

@@ -29,6 +29,7 @@ export async function POST(request: Request) {
 
   const body = await request.json();
   const message = String(body.message || "").trim();
+  const coachInstruction = String(body.coachInstruction || "").trim();
   const conversationId = body.conversationId ? String(body.conversationId) : "";
   const childProfileId = body.childProfileId ? String(body.childProfileId) : null;
 
@@ -97,7 +98,7 @@ export async function POST(request: Request) {
   let vika;
   try {
     vika = await generateVikaResponse({
-      input: message,
+      input: coachInstruction || message,
       history: (history || []) as Message[],
       childContext: childContext(profile as ChildProfile | null),
     });

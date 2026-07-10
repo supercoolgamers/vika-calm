@@ -246,23 +246,40 @@ button:disabled {
   margin: 0;
 }
 
+.followup-panel {
+  border-top: 1px solid var(--line);
+  margin-top: 16px;
+  padding-top: 12px;
+}
+
+.followup-panel p {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
 .followups,
 .tag-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 0;
 }
 
 .followups button,
 .tag-row span {
-  background: #f4f0e8;
-  border: 1px solid var(--line);
+  background: #eef5f1;
+  border: 1px solid #c8d8d0;
   border-radius: 999px;
-  color: #3d3a36;
+  color: var(--sage-dark);
   min-height: 34px;
-  padding: 7px 10px;
+  padding: 8px 12px;
   text-align: left;
+}
+
+.followups button:hover {
+  background: #e2ede7;
 }
 
 .composer {
