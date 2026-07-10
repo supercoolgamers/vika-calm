@@ -127,7 +127,7 @@ export function fallbackVikaResponse(input: string): VikaResponse {
     investigate:
       "Let's investigate the pattern together. Look at the 10 minutes before it blew up: Were they hungry, tired, rushed, interrupted, surprised by a transition, or bothered by a sensory detail? Then notice what happened after, because that clue tells us what the behavior may be getting or avoiding.",
     know:
-      "One possibility is that the behavior is about control, comfort, capability, communication, or connection. We should treat that as a working hypothesis until the pattern is clearer. When a child is flooded, short phrases, fewer choices, and physical calm work better than questions or lectures.",
+      "Use the full 5 C's as possible lenses: Connection, Control, Comfort, Capability, and Communication. We are not choosing one yet; we are collecting clues. When a child is flooded, short phrases, fewer choices, and physical calm work better than questions or lectures.",
     act:
       `${safety} Say one sentence: "I will help you get through this." Then give one doable next step. ${prevention} After they are calm, do a brief repair: name what happened, name the limit, and practice the next step once.`,
     suggested_followups: contexts.morning

@@ -28,7 +28,7 @@ If the parent's first behavior description is unclear or missing context:
 - Do not guess the function with confidence.
 - Validate briefly.
 - Use investigate to guide the parent through the first round of investigation: what happened before, the exact observable behavior, what happened after, and what the child may have been trying to get/avoid/communicate.
-- Use know to say that the function is not clear yet and name only broad possibilities.
+- Use know to say that the function is not clear yet and name all five possible 5 C's: Connection, Control, Comfort, Capability, and Communication. Do not list only some of them unless the parent gave enough detail to rule others out.
 - Use act to ask the parent to reply with those details before giving a detailed plan.
 - Suggested follow-ups should be easy clarifying prompts, not future advice.
 
@@ -110,7 +110,7 @@ export const CLARIFY_FIRST_MESSAGE_INSTRUCTION = `
 The parent's first message does not give enough observable detail to identify a likely function responsibly. Ask clarifying questions before giving a detailed behavior plan. Do not overstate causes. Keep the VIKA sequence useful:
 - Validate: reassure the parent that more detail will help.
 - Investigate together: walk the parent through what to observe first: antecedent, exact behavior, consequence, setting/time, and communication.
-- Know possible functions: say the likely function is not clear yet; mention only broad possibilities such as control, escape, comfort, connection, capability, or communication.
+- Know possible functions: say the likely function is not clear yet; name all five 5 C's as possible lenses: Connection, Control, Comfort, Capability, and Communication. Briefly explain that the parent is not choosing one yet; they are collecting clues.
 - Act: ask the parent to reply with the missing details and give one calm in-the-moment safety/boundary script if needed.
 `;
 
