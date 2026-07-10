@@ -8,19 +8,24 @@ export function VikaCard({
   onFollowup?: (text: string) => void;
 }) {
   const sections = [
-    ["Validate", message.vika_validate],
-    ["Investigate", message.vika_investigate],
-    ["Know", message.vika_know],
-    ["Act", message.vika_act],
+    ["V", "Validate", message.vika_validate],
+    ["I", "Investigate together", message.vika_investigate],
+    ["K", "Know possible functions", message.vika_know],
+    ["A", "Act", message.vika_act],
   ];
 
   return (
     <article className="vika-card">
       <div className="vika-grid">
-        {sections.map(([label, body]) => (
-          <section key={label} className="vika-section">
-            <h3>{label}</h3>
-            <p>{body}</p>
+        {sections.map(([letter, label, body]) => (
+          <section key={letter} className="vika-section">
+            <div className="vika-marker" aria-hidden="true">
+              {letter}
+            </div>
+            <div>
+              <h3>{label}</h3>
+              <p>{body}</p>
+            </div>
           </section>
         ))}
       </div>

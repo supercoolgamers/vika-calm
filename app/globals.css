@@ -215,12 +215,19 @@ button:disabled {
 .vika-grid {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .vika-section {
+  align-items: start;
+  background: #fffefd;
+  border: 1px solid var(--line);
   border-left: 4px solid var(--sage);
-  padding-left: 12px;
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 44px minmax(0, 1fr);
+  padding: 14px;
 }
 
 .vika-section:nth-child(2) {
@@ -236,7 +243,7 @@ button:disabled {
 }
 
 .vika-section h3 {
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin: 0 0 6px;
 }
 
@@ -244,6 +251,19 @@ button:disabled {
   color: #3d3a36;
   line-height: 1.5;
   margin: 0;
+}
+
+.vika-marker {
+  align-items: center;
+  background: #eff5f2;
+  border: 1px solid #cfddd6;
+  border-radius: 999px;
+  color: var(--sage-dark);
+  display: inline-flex;
+  font-weight: 800;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
 }
 
 .followup-panel {

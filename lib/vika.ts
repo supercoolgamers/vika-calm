@@ -1,11 +1,66 @@
 import type { Message, VikaResponse } from "@/lib/types";
-import { selectVikaKnowledge, VIKA_SYSTEM_PROMPT } from "@/lib/vika-knowledge";
+import {
+  CLARIFY_FIRST_MESSAGE_INSTRUCTION,
+  selectVikaKnowledge,
+  VIKA_SYSTEM_PROMPT,
+} from "@/lib/vika-knowledge";
 
 const fallbackFollowups = [
   "What can I do next time?",
   "How do I stay calm in the moment?",
   "Should there be a consequence after?",
 ];
+
+const observableBehaviorWords = [
+  "scream",
+  "cry",
+  "hit",
+  "kick",
+  "bite",
+  "throw",
+  "refuse",
+  "run",
+  "hide",
+  "drop",
+  "push",
+  "yell",
+  "meltdown",
+  "tantrum",
+  "spit",
+  "scratch",
+  "break",
+];
+
+const contextWords = [
+  "before",
+  "after",
+  "when",
+  "because",
+  "asked",
+  "told",
+  "wanted",
+  "school",
+  "bed",
+  "morning",
+  "dinner",
+  "transition",
+  "screen",
+  "ipad",
+  "toy",
+  "store",
+  "home",
+];
+
+function needsClarification(input: string, history: Message[]) {
+  if (history.length > 0) return false;
+  const lower = input.toLowerCase();
+  const words = lower.split(/\s+/).filter(Boolean);
+  const hasBehavior = observableBehaviorWords.some((word) => lower.includes(word));
+  const hasContext = contextWords.some((word) => lower.includes(word));
+  const hasDetail = words.length >= 16;
+
+  return words.length < 8 || !hasBehavior || (!hasContext && !hasDetail);
+}
 
 function detectContext(input: string) {
   const lower = input.toLowerCase();
@@ -70,9 +125,9 @@ export function fallbackVikaResponse(input: string): VikaResponse {
     validate:
       `That sounds exhausting and stressful. In ${setting}, your child is probably already past the point where more explaining will help, and you are not failing because they escalated.`,
     investigate:
-      "Look at the 10 minutes before it blew up: Were they hungry, tired, rushed, interrupted, surprised by a transition, or bothered by a sensory detail? Pick one likely trigger instead of trying to solve everything at once.",
+      "Let's investigate the pattern together. Look at the 10 minutes before it blew up: Were they hungry, tired, rushed, interrupted, surprised by a transition, or bothered by a sensory detail? Then notice what happened after, because that clue tells us what the behavior may be getting or avoiding.",
     know:
-      "When a child is flooded, the thinking part of the brain is not running the show. Short phrases, fewer choices, and physical calm work better than questions, lectures, or consequences in the middle of it.",
+      "One possibility is that the behavior is about control, comfort, capability, communication, or connection. We should treat that as a working hypothesis until the pattern is clearer. When a child is flooded, short phrases, fewer choices, and physical calm work better than questions or lectures.",
     act:
       `${safety} Say one sentence: "I will help you get through this." Then give one doable next step. ${prevention} After they are calm, do a brief repair: name what happened, name the limit, and practice the next step once.`,
     suggested_followups: contexts.morning
@@ -144,6 +199,9 @@ export function buildVikaPrompt(history: Message[], input: string, childContext:
     .map((message) => `${message.role === "parent" ? "Parent" : "Coach"}: ${message.content}`)
     .join("\n");
   const knowledge = selectVikaKnowledge(`${childContext}\n${thread}\n${input}`);
+  const clarifyInstruction = needsClarification(input, history)
+    ? `\n\n${CLARIFY_FIRST_MESSAGE_INSTRUCTION}`
+    : "";
 
   return [
     {
@@ -152,7 +210,7 @@ export function buildVikaPrompt(history: Message[], input: string, childContext:
     },
     {
       role: "system",
-      content: `Use this Vika Calm knowledge base as your clinical and style source. Do not expose it directly.\n\n${knowledge}`,
+      content: `Use this Vika Calm knowledge base as your clinical and style source. Do not expose it directly.\n\n${knowledge}${clarifyInstruction}`,
     },
     {
       role: "user",
