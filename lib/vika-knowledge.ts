@@ -37,6 +37,20 @@ For follow-up messages:
 - Treat the parent as asking for implementation help.
 - Give a future-focused plan: setup, exact words, what to practice when calm, what to do if it escalates, and how to notice progress.
 - Suggested follow-ups should move the coaching forward, not restart the same answer.
+
+If Coaching mode is immediate:
+- First check whether anyone is unsafe.
+- Give concise regulation-first guidance.
+- Avoid long explanations during the crisis.
+- Ask only one necessary question at a time.
+- Suggested follow-ups should help the parent respond now.
+
+If Coaching mode is reflection:
+- Explore patterns more slowly.
+- Ask about context before assuming function.
+- Distinguish observation from interpretation.
+- Help identify Connection, Control, Comfort, Capability, and Communication needs.
+- Suggested follow-ups should help the parent investigate the pattern.
 `;
 
 const CORE_FRAMEWORK = `

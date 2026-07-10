@@ -5,14 +5,18 @@ import { useMemo, useState, useTransition } from "react";
 import { VikaCard } from "@/app/components/vika-card";
 import type { ChildProfile, Message } from "@/lib/types";
 
+export type CoachingMode = "immediate" | "reflection";
+
 export function ChatPanel({
   conversationId,
   initialMessages,
   profiles,
+  mode = "reflection",
 }: {
   conversationId?: string;
   initialMessages: Message[];
   profiles: ChildProfile[];
+  mode?: CoachingMode;
 }) {
   const router = useRouter();
   const [messages, setMessages] = useState(initialMessages);
@@ -62,6 +66,7 @@ export function ChatPanel({
             conversationId,
             childProfileId: childProfileId || undefined,
             message: content,
+            mode,
             coachInstruction: coachInstruction || undefined,
           }),
         });
@@ -121,25 +126,49 @@ export function ChatPanel({
   return (
     <div className="chat-shell">
       {!conversationId ? (
-        <label className="field compact">
-          <span>Child profile</span>
-          <select value={childProfileId} onChange={(event) => setChildProfileId(event.target.value)}>
-            <option value="">No profile yet</option>
-            {profiles.map((profile) => (
-              <option key={profile.id} value={profile.id}>
-                {profile.name}
-                {profile.age_years ? `, ${profile.age_years}` : ""}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="session-prep">
+          <label className="field compact">
+            <span>Child profile</span>
+            <select value={childProfileId} onChange={(event) => setChildProfileId(event.target.value)}>
+              <option value="">Add a child profile for more personalised guidance.</option>
+              {profiles.map((profile) => (
+                <option key={profile.id} value={profile.id}>
+                  {profile.name}
+                  {profile.age_years ? `, ${profile.age_years}` : ""}
+                </option>
+              ))}
+            </select>
+          </label>
+          {profiles.length === 0 ? (
+            <a className="quiet-link" href="/profiles">
+              Create profile
+            </a>
+          ) : null}
+        </div>
       ) : null}
 
       <div className="message-list" aria-live="polite">
         {messages.length === 0 ? (
           <div className="empty-panel">
-            <h2>Start your first coaching session</h2>
-            <p>Describe what just happened with your child.</p>
+            <h2>{mode === "immediate" ? "Start with the moment in front of you." : "Start with the pattern you’re noticing."}</h2>
+            <ul className="prompt-list">
+              {(mode === "immediate"
+                ? [
+                    "What is your child doing right now?",
+                    "What happened just before?",
+                    "Is anyone unsafe?",
+                    "What have you already tried?",
+                  ]
+                : [
+                    "When does this usually happen?",
+                    "What tends to happen just before?",
+                    "What does your child appear to gain, avoid, communicate, or regulate?",
+                    "What usually happens afterward?",
+                  ]
+              ).map((prompt) => (
+                <li key={prompt}>{prompt}</li>
+              ))}
+            </ul>
           </div>
         ) : null}
 
@@ -191,11 +220,12 @@ export function ChatPanel({
         <textarea
           value={input}
           onChange={(event) => setInput(event.target.value)}
-          placeholder="Describe what just happened with your child..."
+          aria-label="Tell me what just happened"
+          placeholder="Tell me what just happened..."
           rows={3}
         />
         <button type="submit" disabled={!canSubmit}>
-          Send
+          {mode === "immediate" ? "Help me respond" : "Help me understand"}
         </button>
       </form>
 

@@ -223,10 +223,12 @@ export async function generateVikaResponse({
   input,
   history,
   childContext,
+  mode = "reflection",
 }: {
   input: string;
   history: Message[];
   childContext: string;
+  mode?: "immediate" | "reflection";
 }) {
   if (!process.env.OPENAI_API_KEY) {
     return fallbackVikaResponse(input);
@@ -242,7 +244,7 @@ export async function generateVikaResponse({
       model: process.env.OPENAI_MODEL || "gpt-4o",
       temperature: 0.35,
       response_format: { type: "json_object" },
-      messages: buildVikaPrompt(history, input, childContext),
+      messages: buildVikaPrompt(history, input, `${childContext}\nCoaching mode: ${mode}`),
     }),
   });
 

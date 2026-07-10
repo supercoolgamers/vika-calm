@@ -30,6 +30,7 @@ export async function POST(request: Request) {
   const body = await request.json();
   const message = String(body.message || "").trim();
   const coachInstruction = String(body.coachInstruction || "").trim();
+  const mode = body.mode === "immediate" ? "immediate" : "reflection";
   const conversationId = body.conversationId ? String(body.conversationId) : "";
   const childProfileId = body.childProfileId ? String(body.childProfileId) : null;
 
@@ -84,6 +85,7 @@ export async function POST(request: Request) {
       input: coachInstruction || message,
       history: (history || []) as Message[],
       childContext: childContext(profile as ChildProfile | null),
+      mode,
     });
   } catch (error) {
     console.error("[api/chat]", error);
